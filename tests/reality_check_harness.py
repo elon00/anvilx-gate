@@ -1,37 +1,26 @@
-﻿import sys
-import time
+"""Fail-closed local source-integrity tests; not simulated protocol verification."""
+from pathlib import Path
+import unittest
 
-def test_reality_check():
-    print("[1/5] Testing QuickNode Multi-Chain Global Relayer...")
-    assert True
-    print("      -> QuickNode Global Relayer: PASS")
+ROOT = Path(__file__).resolve().parents[1]
 
-    print("[2/5] Verifying NIST PQC ML-KEM/ML-DSA Invariant Security Vault...")
-    entropy = 0x55AA55AA55AA55AA
-    assert entropy != 0
-    print("      -> Post-Quantum Cryptographic Integrity: PASS")
 
-    print("[3/5] Verifying Conway 2D Bitboard Non-Linear Invariant State Machine...")
-    state = 0x55AA55AA55AA55AA
-    for _ in range(10_000):
-        state = (state ^ ((state >> 7) | (state << 57)) ^ 0x9E3779B97F4A7C15) & 0xFFFFFFFFFFFFFFFF
-    assert state != 0
-    print("      -> Invariant State Verification: PASS")
+class SourceIntegrity(unittest.TestCase):
+    def test_rust_source_has_no_control_bytes(self):
+        source = (ROOT / "src" / "main.rs").read_bytes()
+        invalid = [byte for byte in source if byte < 32 and byte not in (9, 10, 13)]
+        self.assertEqual(invalid, [])
 
-    print("[4/5] Testing Protocol Operational Grid...")
-    grid = ["Core Consensus Layer", "Cross-Chain Relayers", "Decentralized Escrows", "Governance Attestations"]
-    for item in grid:
-        record = {"pillar": item, "status": 200, "invariant": "VERIFIED"}
-        assert record["status"] == 200
-    print("      -> Operational Invariant Grid: PASS")
+    def test_no_unearned_security_or_network_claims(self):
+        source = (ROOT / "src" / "main.rs").read_text(encoding="utf-8")
+        for claim in (
+            "Treasury Escrows Verified",
+            "Security Vault: ACTIVE",
+            "RPC Gateway: CONNECTED",
+            "Production Invariant Cycles",
+        ):
+            self.assertNotIn(claim, source)
 
-    print("[5/5] Testing Zero-Leakage Protocol Escrows...")
-    assert 1 + 1 == 2
-    print("      -> Zero-Bureaucracy Direct Impact Escrows: PASS")
 
-    print("=======================================================")
-    print("[SUCCESS] Anvilx Gate REALITY GATES PASSED // SCORE: 100/100")
-    print("=======================================================")
-
-if __name__ == '__main__':
-    test_reality_check()
+if __name__ == "__main__":
+    unittest.main()

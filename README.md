@@ -1,31 +1,24 @@
-﻿# Anvilx Gate (ticker)
-> Autonomous Production-Grade Protocol
+# Anvilx Gate — Local Diagnostic (NOT production ready)
 
-[![CI/CD Pipeline](https://github.com/elon00/anvilx-gate/actions/workflows/ci-cd-pipeline.yml/badge.svg)](https://github.com/elon00/anvilx-gate/actions)
-[![Score](https://img.shields.io/badge/Reality%20Gates-100%2F100%20GENUINE%20GREEN-2ea44f?style=flat-square)](#reality-check-verification)
-[![NIST PQC](https://img.shields.io/badge/Security-NIST%20FIPS%20203%20%26%20204-blue?style=flat-square)](#security)
-[![Verified](https://img.shields.io/badge/Status-100%25%20Verified-gold?style=flat-square)](#pillars)
+**Status:** Deterministic local Rust state diagnostic with genuine executable regression tests. No blockchain node emulator, authenticated RPC, remote network integration, cryptographic verification, x402 settlement, or production deployment functionality has been independently implemented or accepted in this repository.
 
----
+Prior 100/100, FIPS, QuickNode-connected, and production claims were unsupported and have been withdrawn from this README and executable output. The state mixer is **not cryptography** and not a Conway automaton. Other historical documentation may contain unverified claims.
 
-## About Anvilx Gate
-**Anvilx Gate (\ticker)** is an autonomous, decentralized, post-quantum intelligence protocol engineered for production-grade operational efficiency and cryptographic trust.
+## Reproduce the narrow tests
 
----
+```bash
+cargo test --all-targets
+python -m compileall -q tests
+python -m unittest discover -s tests -p 'reality_*.py' -v
+```
 
-## Running the Protocol Locally
+The Python regression tests invoke the **actual local Rust binary** and compare its output to an independent reference calculation. Green CI proves only those narrow diagnostics, not implementation of the approved local-node-emulator project or production readiness.
 
-### 1. Execute Reality Check Harness (Python)
-``bash
-python tests/reality_check_harness.py
-``
+## Remaining acceptance gates
 
-### 2. Run the High-Performance Rust State Engine
-``bash
-cargo run
-``
+1. Define actual local blockchain node emulator behavior, interfaces, deterministic state transitions, and adversarial cases.
+2. Implement the real emulator and protocol/engine integration tests; distinguish fixtures from production execution.
+3. Add dependency audits, negative tests, threat model, authenticated interfaces where applicable, and independent security review.
+4. Resolve manifest private=true versus actual public repository visibility with the owner; no automatic visibility changes.
 
----
-
-## Reality Check Verification
-Anvilx Gate enforces strict pre-deployment verification: all invariants, cryptographic proofs, and micro-escrow contracts must achieve a **100/100 Genuine Green** rating before mainnet settlement.
+No network deployment, paid service, gas, cycles, or secret keys are needed for the local checks.
